@@ -1,4 +1,3 @@
-
 import pytest
 from selene import browser
 from selenium import webdriver
@@ -7,7 +6,6 @@ from selenium.webdriver.chrome.options import Options
 
 @pytest.fixture(scope='function')
 def setup_browser_landing():
-
     browser.config.base_url = "https://www.povarenok.ru"
     browser.config.window_width = 1920
     browser.config.window_height = 1080
@@ -27,7 +25,6 @@ def setup_browser_landing():
     # Отключаем GPU (если возникают ошибки)
     options.add_argument("--disable-gpu")
 
-
     selenoid_capabilities = {
         "browserName": 'chrome',
         "browserVersion": '127.0',
@@ -42,15 +39,4 @@ def setup_browser_landing():
                                              options=options)
     yield browser
 
-    add_html(browser)
-    add_screenshot(browser)
-    add_logs(browser)
-    add_video(browser)
-
     browser.quit()
-
-
-
-
-
-

@@ -1,5 +1,5 @@
-
 from selene import browser, be, have, by
+
 
 class CheckPage:
     def __init__(self):
@@ -26,7 +26,7 @@ class CheckPage:
             browser.element(by.text(text)).should(be.present)
         return self
 
-    def should_have_site_name(self,name):
+    def should_have_site_name(self, name):
         browser.element(".logo").should(have.exact_text(name)).click()
         return self
 
@@ -51,7 +51,6 @@ class CheckPage:
             "Выпечка": "bakers_landing",
         }
         for link_text, key in mapping.items():
-
             element = browser.element(by.text(link_text)).should(be.present)
 
             actual_href = element.get_attribute("href")
@@ -62,13 +61,5 @@ class CheckPage:
             )
         return self
 
+
 app = CheckPage()
-
-
-
-
-
-
-
-
-
