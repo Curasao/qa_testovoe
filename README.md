@@ -80,3 +80,4 @@
 - Pytest Fixtures
 - Selenoid cross browser
 
+Ссылка на Allure джобу - https://jenkins.autotests.cloud/job/For-pet_project_Crunchy_fox/7/allure/#
