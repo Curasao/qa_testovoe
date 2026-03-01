@@ -1,6 +1,4 @@
-from page.page import app
-import time
-import pytest
+
 import allure
 from page.page import app
 from page.page import CheckPage

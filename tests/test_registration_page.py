@@ -1,27 +1,51 @@
+from asyncio import timeout
+from selene import browser, have, be
 import pytest
-from selene import browser, be, have, by
-import time
+import allure
 
-class RegistrationPage:
 
+class AuthPage:
     def __init__(self):
-        self.browser = browser
-        pass
+        self.login_field = browser.element('#tl_login_id')
+        self.password_field = browser.element('#tl_pwd_id')
+        self.submit_button = browser.element('[value="Войти на сайт"]')
+
+    def open(self, setup_browser_landing):
+        browser.open('https://www.povarenok.ru')
+
+    def fill_login(self, email_or_username, setup_browser_landing):
+        browser.element(self.login_field).type('bellkapd-2026')
+
+    def fill_password(self, password, setup_browser_landing):
+        browser.element(self.password_field).type('testoviy-2026')
+
+    def submit_auth(self):
+        browser.element(self.submit_button).click()
+
+    def check_success(self):
+        browser.element('b').should(have.text('Здравствуйте, bellkapd-2026'))
+
+    def check_failure(self):
+        browser.element('b').should(have.text('Если вы входите на этот сайт впервые, введите e-mail вместо никнейма.'))
 
 
-def test_login_user_valid_data():
-    browser.element('#tl_login_id').should(be.blank).press_enter()
-    time.sleep(10)
-    browser.element('.dr__cross').should(be.visible).click()
-    browser.element('#login_id').should(be.enabled).type('bellkapd-2026@yandex.ru').click()
-    time.sleep(10)
-    browser.element('#password_id').should(be.enabled).type('testoviy2026').click()
+@allure.title('Авторизация с корректными данными')
+def test_valid_login():
+    auth_page = AuthPage()
+    auth_page.open()
+    browser.element('.dr__cross').with_(timeout=30).should(be.visible).click()
+    auth_page.fill_login('bellkapd-2026@yandex.ru')
+    auth_page.fill_password('testoviy2026')
+    auth_page.submit_auth()
+    auth_page.check_success()
 
 
-def test_login_user_unvalid_data():
-    browser.element('#tl_login_id').should(be.blank).press_enter()
-    time.sleep(10)
-    browser.element('.dr__cross').should(be.visible).click()
-    browser.element('#login_id').should(be.enabled).type('b@yandex.ru').click()
-    time.sleep(10)
-    browser.element('#password_id').should(be.enabled).type('test1111').click()
+@allure.title('Авторизация с некорректными данными')
+def test_invalid_login():
+    auth_page = AuthPage()
+    auth_page.open()
+    browser.element('.dr__cross').with_(timeout=30).should(be.visible).click()
+    auth_page.fill_login('bad_email@example.com')
+    auth_page.fill_password('incorrect_pass')
+    auth_page.submit_auth()
+    auth_page.check_failure()
