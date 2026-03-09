@@ -9,7 +9,7 @@ def setup_browser_landing():
       options = Options()
       options.headless = True
       driver = webdriver.Chrome(options=options)
-      driver.set_window_size(1920, 1080)
+      driver.set_window_size(2560, 1550)
       browser.config.driver = driver
       browser.config.base_url = "https://www.povarenok.ru"
       browser.config.timeout = 30

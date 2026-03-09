@@ -16,8 +16,17 @@ class AuthPage:
         browser.element('#tl_pwd_id').should(be.visible).type('testoviy2026')
 
 
+    def fill_mediafort_login(self):
+        browser.element('#login_id').should(be.visible).type('bellkapd-2026')
+
+    def fill_mediafort_pwd(self):
+        browser.element('#password_id').should(be.visible).type('testoviy2026')
+
     def press_button(self):
+        browser.element('input[value="Войти на сайт"]').execute_script(
+            "document.querySelector('input[value=\"Войти на сайт\"]').scrollIntoView()")
         browser.element('input[value="Войти на сайт"]').should(be.visible).click()
+
 
     def add_recipe(self):
         browser.element('.sbm-link').should(be.visible).click()
@@ -27,6 +36,9 @@ class AuthPage:
 
     def fill_rek_email(self):
         browser.element('.table>tbody>tr>td>input[placeholder="Ваш e-mail"]').should(be.visible).with_(timeout=30).type('test@yandex.ru')
+
+    def submit_button(self):
+        browser.element('input[value="Войти!"]').should(be.visible).click()
 
     def check_success(self):
         browser.element('b').should(have.text('Здравствуйте, bellkapd-2026'))
@@ -39,9 +51,10 @@ class AuthPage:
 def test_valid_login(setup_browser_landing):
     auth_page = AuthPage()
     auth_page.open()
-    auth_page.fill_login()
-    auth_page.fill_password()
     auth_page.press_button()
+    auth_page.fill_mediafort_login()
+    auth_page.fill_mediafort_pwd()
+    auth_page.submit_button()
     auth_page.check_success()
 
 
@@ -49,9 +62,10 @@ def test_valid_login(setup_browser_landing):
 def test_invalid_login(setup_browser_landing):
     auth_page = AuthPage()
     auth_page.open()
-    auth_page.fill_login()
-    auth_page.fill_password()
     auth_page.press_button()
+    auth_page.fill_mediafort_login()
+    auth_page.fill_mediafort_pwd()
+    auth_page.submit_button()
     auth_page.check_failure()
 
 
