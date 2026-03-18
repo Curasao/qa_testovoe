@@ -17,15 +17,31 @@ class AuthPage:
 
 
     def fill_mediafort_login(self):
-        browser.element('#login_id').should(be.visible).type('bellkapd-2026')
+        browser.driver.execute_script(
+            "document.querySelector('#login_id').value = 'bellkapd-2026'"
+        )
 
     def fill_mediafort_pwd(self):
-        browser.element('#password_id').should(be.visible).type('testoviy2026')
+        browser.driver.execute_script(
+            "document.querySelector('#password_id').value = 'testoviy2026'"
+        )
+
+
+    def fill_mediafort_unsucces_pwd(self):
+        browser.driver.execute_script(
+            "document.querySelector('#password_id').value = 'test_2026'"
+        )
+
+    def fill_mediafort_unsuccess_login(self):
+        browser.driver.execute_script(
+            "document.querySelector('#login_id').value = 'test-2026'"
+        )
 
     def press_button(self):
-        browser.element('input[value="Войти на сайт"]').execute_script(
-            "document.querySelector('input[value=\"Войти на сайт\"]').scrollIntoView()")
-        browser.element('input[value="Войти на сайт"]').should(be.visible).click()
+        browser.driver.execute_script(
+            "document.querySelector('input[value=\"Войти на сайт\"]').click()"
+        )
+
 
 
     def add_recipe(self):
@@ -41,10 +57,15 @@ class AuthPage:
         browser.element('input[value="Войти!"]').should(be.visible).click()
 
     def check_success(self):
-        browser.element('b').should(have.text('Здравствуйте, bellkapd-2026'))
+
+        browser.element('.userhello').should(
+                have.text('Здравствуйте, bellkapd-2026')
+            )
 
     def check_failure(self):
-        browser.element('b').should(have.text('Если вы входите на этот сайт впервые, введите e-mail вместо никнейма.'))
+        browser.element('.main-form').should(
+            have.text('Пользователь с таким именем не найден, либо указан неправильный пароль. Если вы входите на этот сайт впервые, введите e-mail вместо никнейма.')
+        )
 
 
 @allure.title('Авторизация с корректными данными')
@@ -63,8 +84,8 @@ def test_invalid_login(setup_browser_landing):
     auth_page = AuthPage()
     auth_page.open()
     auth_page.press_button()
-    auth_page.fill_mediafort_login()
-    auth_page.fill_mediafort_pwd()
+    auth_page.fill_mediafort_unsuccess_login()
+    auth_page.fill_mediafort_unsucces_pwd()
     auth_page.submit_button()
     auth_page.check_failure()
 

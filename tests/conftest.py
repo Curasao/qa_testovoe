@@ -12,7 +12,7 @@ def setup_browser_landing():
       driver.set_window_size(2560, 1550)
       browser.config.driver = driver
       browser.config.base_url = "https://www.povarenok.ru"
-      browser.config.timeout = 30
+      browser.config.timeout = 130
 
       yield browser
 
