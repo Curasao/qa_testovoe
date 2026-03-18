@@ -28,8 +28,12 @@ def test_link_all_recipes(setup_browser_landing):
 def test_link_new_recipes(setup_browser_landing):
     app = CheckPage()
     app.open()
-    link_element = browser.element('a[href="https://www.povarenok.ru/recipes/"]')
-    link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/'))
+    link = browser.all('.recipes-nav a').element_by(have.text('Свежие рецепты'))
+
+    link.should(be.visible)
+    link.should(have.attribute('href','https://www.povarenok.ru/recipes'))
+
+
 
 @allure.title('Проверка ссылки Бульоны и супы')
 def test_link_soups(setup_browser_landing):
