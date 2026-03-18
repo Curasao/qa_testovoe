@@ -83,3 +83,10 @@ def test_link_baking(setup_browser_landing):
     app.open()
     link_element = browser.element('a[href="https://www.povarenok.ru/recipes/category/25/"]')
     link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/category/25/'))
+
+@allure.title('Проверка поиска на странице')
+def test_search(setup_browser_landing):
+    app = CheckPage()
+    app.open()
+    browser.element('[placeholder="Поиск по 156921 проверенному рецепту"]').should(be.visible).click()
+    browser.element('[placeholder="Поиск по 156921 проверенному рецепту"]').type('грибной суп').click()
