@@ -20,5 +20,13 @@ class CheckPage:
 
         return self
 
+    def should_have_menu_link(self, text, href):
+        link = browser.all('.recipes-nav a').element_by(have.text(text))
+        link.should(be.visible)
+        link.should(have.attribute('href').value_containing(href))
+
+    def landing_search(self):
+        browser.element('[placeholder*="Поиск"]').should(be.visible).type('грибной суп').press_enter()
+
 
 app = CheckPage()

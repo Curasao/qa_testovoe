@@ -1,13 +1,10 @@
-
 import allure
-from page.page import app
+import pytest
 from page.page import CheckPage
-from selene import browser, be, have, by
+
 
 @allure.epic('Главная страница')
 @allure.feature('Проверка работы главной страницы')
-@allure.title('Проверка отображения меню')
-
 
 
 @allure.title('Проверка названия сайта')
@@ -21,72 +18,29 @@ def test_site_name_povarenok(setup_browser_landing):
 def test_link_all_recipes(setup_browser_landing):
     app = CheckPage()
     app.open()
-    link_element = browser.element('a[href="https://www.povarenok.ru/recipes/cat/"]')
-    link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/cat/'))
+    app.should_have_menu_link('Все рецепты', '/recipes/cat/')
 
-@allure.title('Проверка ссылки Свежие рецепты')
-def test_link_new_recipes(setup_browser_landing):
+
+
+@allure.title('Проверка ссылок категорий')
+@pytest.mark.parametrize("name, href", [
+    ('Свежие рецепты', '/recipes'),
+    ('Бульоны и супы', '/recipes/category/2/'),
+    ('Горячие блюда', '/recipes/category/6/'),
+    ('Соусы', '/recipes/category/23/'),
+    ('Закуски', '/recipes/category/15/'),
+    ('Десерты', '/recipes/category/30/'),
+    ('Салаты', '/recipes/category/12/'),
+    ('Выпечка', '/recipes/category/25/'),
+])
+def test_recipe_links(setup_browser_landing, name, href):
     app = CheckPage()
     app.open()
-    link = browser.all('.recipes-nav a').element_by(have.text('Свежие рецепты'))
+    app.should_have_menu_link(name, href)
 
-    link.should(be.visible)
-    link.should(have.attribute('href','https://www.povarenok.ru/recipes'))
-
-
-
-@allure.title('Проверка ссылки Бульоны и супы')
-def test_link_soups(setup_browser_landing):
-    app = CheckPage()
-    app.open()
-    link_element = browser.element('a[href="https://www.povarenok.ru/recipes/category/2/"]')
-    link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/category/2/'))
-
-@allure.title('Проверка ссылки Горячие блюда')
-def test_link_hot_dishes(setup_browser_landing):
-    app = CheckPage()
-    app.open()
-    link_element = browser.element('a[href="https://www.povarenok.ru/recipes/category/6/"]')
-    link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/category/6/'))
-
-@allure.title('Проверка ссылки Соусы')
-def test_link_sauces(setup_browser_landing):
-    app = CheckPage()
-    app.open()
-    link_element = browser.element('a[href="https://www.povarenok.ru/recipes/category/23/"]')
-    link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/category/23/'))
-
-@allure.title('Проверка ссылки Закуски')
-def test_link_snacks(setup_browser_landing):
-    app = CheckPage()
-    app.open()
-    link_element = browser.element('a[href="https://www.povarenok.ru/recipes/category/15/"]')
-    link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/category/15/'))
-
-@allure.title('Проверка ссылки Десерты')
-def test_link_desserts(setup_browser_landing):
-    app = CheckPage()
-    app.open()
-    link_element = browser.element('a[href="https://www.povarenok.ru/recipes/category/30/"]')
-    link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/category/30/'))
-
-@allure.title('Проверка ссылки Салаты')
-def test_link_salads(setup_browser_landing):
-    app = CheckPage()
-    app.open()
-    link_element = browser.element('a[href="https://www.povarenok.ru/recipes/category/12/"]')
-    link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/category/12/'))
-
-@allure.title('Проверка ссылки Выпечка')
-def test_link_baking(setup_browser_landing):
-    app = CheckPage()
-    app.open()
-    link_element = browser.element('a[href="https://www.povarenok.ru/recipes/category/25/"]')
-    link_element.should(have.attribute('href', 'https://www.povarenok.ru/recipes/category/25/'))
 
 @allure.title('Проверка поиска на странице')
 def test_search(setup_browser_landing):
     app = CheckPage()
     app.open()
-    browser.element('[placeholder="Поиск по 156921 проверенному рецепту"]').should(be.visible).click()
-    browser.element('[placeholder="Поиск по 156921 проверенному рецепту"]').type('грибной суп').click()
+    app.landing_search()

@@ -110,3 +110,4 @@ geckodriver.exe
 selenium-server-standalone-3.141.59.jar
 
 output/
+allure-results
